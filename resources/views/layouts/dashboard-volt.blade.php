@@ -34,11 +34,11 @@
         content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('volt/src/assets/img/favicon/apple-touch-icon.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/img/logobnicrop.png') }}">
     <link rel="icon" type="image/png" sizes="32x32"
-        href="{{ asset('volt/src/assets/img/favicon/favicon-32x32.png') }}">
+        href="{{ asset('assets/img/logobnicrop.png') }}">
     <link rel="icon" type="image/png" sizes="16x16"
-        href="{{ asset('volt/src/assets/img/favicon/favicon-16x16.png') }}">
+        href="{{ asset('assets/img/logobnicrop.png') }}">
     <link rel="manifest" href="{{ asset('volt/src/assets/img/favicon/site.webmanifest') }}">
     <link rel="mask-icon" href="{{ asset('volt/src/assets/img/favicon/safari-pinned-tab.svg') }}" color="#ffffff">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -116,12 +116,12 @@
             </div>
 
             <!--SIDEBAR NAV-->
-            <ul class="nav flex-column pt-3 pt-md-0">
+            <ul class="nav flex-column pt-   pt-md-0">
                 <li class="nav-item">
                     <a href="../../index.html" class="nav-link d-flex align-items-center">
                         <span class="sidebar-icon">
-                            <img src="{{ asset('assets/img/logobni.png') }}" width="110" height="32"
-                                alt="Volt Logo">
+                            <img src="{{ asset('assets/img/logoagen46alt.png') }}" width="auto" height="auto"
+                                alt="Logo Agen46">
                         </span>
                     </a>
                 </li>
@@ -455,7 +455,7 @@
         <!--DISPLAY CONTENT-->
 
 
-        <footer class="bg-white rounded shadow p-5 mb-4 mt-4">
+        <footer class="bg-white rounded shadow p-3 mb-4 mt-4">
             <div class="row">
                 <div class="col-12 col-md-4 col-xl-6 mb-4 mb-md-0">
                     <p class="mb-0 text-center text-lg-start">© 2019-<span class="current-year"></span> <a
