@@ -14,7 +14,7 @@
                             </svg>
                         </a>
                     </li>
-                    
+
                     <li class="breadcrumb-item active" aria-current="page">List Agen46</li>
                 </ol>
             </nav>
@@ -93,20 +93,16 @@
             </thead>
             <tbody>
                 <!-- Item -->
+                @foreach ($data_agen as $w)
                 <tr>
-                    <td>
-                        <a href="#" class="fw-bold">
-                            1
-                        </a>
-                    </td>
-                    <td>
-                        <span class="fw-normal">Berkah Jaya</span>
-                    </td>
-                    <td><span class="fw-normal">Jl.Argo Manis No.1</span></td>
-                    <td><span class="fw-normal">Taman</span></td>
-                    <td><span class="fw-bold">Kota Madiun</span></td>
-                    <td><span class="fw-bold text-warning">Due</span></td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td><span class="fw-normal">{{ $w->nama_agen }}</span></td>
+                    <td><span class="fw-normal">{{ $w->alamat }}</span></td>
+                    <td><span class="fw-normal">{{ $w->kecamatan }}</span></td>
+                    <td><span class="fw-normal">{{ $w->kota }}</span></td>
+                    <td><span class="fw-normal">{{ $w->keterangan }}</span></td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
         <div class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
@@ -115,10 +111,10 @@
                     <li class="page-item">
                         <a class="page-link" href="#">Previous</a>
                     </li>
-                    <li class="page-item">
+                    <li class="page-item active">
                         <a class="page-link" href="#">1</a>
                     </li>
-                    <li class="page-item active">
+                    <li class="page-item ">
                         <a class="page-link" href="#">2</a>
                     </li>
                     <li class="page-item">

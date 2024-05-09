@@ -26,7 +26,7 @@
                             </svg>
                         </a>
                     </li>
-                    
+
                     <li class="breadcrumb-item active" aria-current="page">Cek Lokasi</li>
                 </ol>
             </nav>
@@ -53,6 +53,7 @@
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script>
+        
         var lokasi = document.getElementById('lokasi');
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
@@ -60,23 +61,50 @@
 
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            //var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            var map = L.map('map').setView([-7.63336818122693, 111.54137712336089], 18);
 
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(map);
-            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+
+            var marker = L.marker([-7.63336818122693, 111.54137712336089]).addTo(map);
+            var circle = L.circle([-7.63336818122693, 111.54137712336089], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-
+                radius: 25
             }).addTo(map);
+
+            var MarkerIcon = L.Icon.extend({
+                options: {
+                    //shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+                    iconSize: [25, 41],
+                    //shadowSize: [50, 64],
+                    iconAnchor: [12, 41],
+                    //shadowAnchor: [4, 62],
+                    popupAnchor: [1, -34]
+                }
+            });
+
+            var greenIcon = new MarkerIcon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
+            });
+
+
+            var marker = L.marker([-7.63336818122693, 111.54137712336089], {
+                icon: greenIcon
+            }).addTo(map).bindPopup("Lokasi Saya");
+            
+            var marker = L.marker([-7.6329449229874475, 111.54117038065984]).addTo(map).bindPopup("popupContent");
+            var marker = L.marker([-7.633515985592806, 111.54094330261117]).addTo(map).bindPopup("Toko Sejahtera");
+
         }
 
         function errorCallback() {
 
         }
+        
     </script>
 @endpush

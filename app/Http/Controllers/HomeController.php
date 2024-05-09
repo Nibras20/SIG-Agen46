@@ -14,7 +14,8 @@ class HomeController extends Controller
 
     public function list_agen46()
     {
-        return view('dashboard.list-agen46');
+        $data_agen = DB::table('data_agen')->orderBy('kode_agen')->get();
+        return view('dashboard.list-agen46', compact('data_agen'));
     }
 
     public function simple_map()
@@ -32,4 +33,6 @@ class HomeController extends Controller
         $data_agen = DB::table('data_agen')->orderBy('kode_agen')->get();
         return view('testing', compact('data_agen'));
     }
+
+
 }
