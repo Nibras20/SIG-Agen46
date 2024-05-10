@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Perhitungan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,16 @@ class HomeController extends Controller
 
     public function simple_map()
     {
-        return view('leaflet.simple-map');
+        $agen = DB::table('data_agen')->orderBy('kode_agen')->get();
+
+        return view('leaflet.simple-map', compact('agen'));
+    }
+
+    public function simple_v2()
+    {
+        $agen = DB::table('data_agen')->orderBy('kode_agen')->get();
+
+        return view('leaflet.simple-v2', compact('agen'));
     }
 
     public function about()
@@ -33,6 +43,5 @@ class HomeController extends Controller
         $data_agen = DB::table('data_agen')->orderBy('kode_agen')->get();
         return view('testing', compact('data_agen'));
     }
-
 
 }

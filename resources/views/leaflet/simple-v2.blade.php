@@ -50,6 +50,7 @@
 @endsection
 
 @push('javascript')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <script>
@@ -59,17 +60,34 @@
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
         }
 
+        function getStoreLocationDistance(userLocation)
+        {
+            return $.ajax({
+                url: route('api.agen.json'),
+                method: 'GET',
+                data: {
+                    userLocation
+                },
+                async: false
+            }).responseJSON
+        }
+
         function successCallback(position) {
-            //lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+            let userLocation = position.coords;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
-            var map = L.map('map').setView([-7.63336818122693, 111.54137712336089], 18);
+
+            let storeLocation = getStoreLocationDistance(userLocation);
+
+            // console.log(storeLocation)
+
+            // var map = L.map('map').setView([-7.63336818122693, 111.54137712336089], 18);
 
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            var circle = L.circle([-7.63336818122693, 111.54137712336089], {
+            var circle = L.circle([userLocation.latitude, userLocation.longitude], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
@@ -90,22 +108,14 @@
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
             });
 
-            var lokasiuser = L.marker([-7.63336818122693, 111.54137712336089], {
+            var lokasiuser = L.marker([userLocation.latitude, userLocation.longitude], {
                 icon: lokasiuser
             }).addTo(map).bindPopup("Lokasi Saya");
 
-            let latUser = -7.633458371155025;
-            let longUser = 111.54138457462933;
 
-            let latStore = -7.634088897474204;
-            let longStore  = 111.5419429855499;
-
-            let distance = ((Math.sqrt(Math.pow(latUser - latStore, 2) + Math.pow(longUser - longStore, 2))*111.319)*1000);
-
-            console.log(distance)
-
-            var lokasi1 = L.marker([latStore, longStore]).addTo(map).bindPopup(`Store 1 distance from user loc is ${distance} / `  + distance);
-            var lokasi2 = L.marker([-7.633515985592806, 111.54094330261117]).addTo(map).bindPopup("Toko Sejahtera");
+            $.each(storeLocation.data, (index, store) => {
+                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`${store.nama_agen} distance from user loc is ${store.distance}`);
+            })
 
         }
 

@@ -60,8 +60,7 @@
           @yield('content')
         </section>
     </main>
-
-    <!-- Core -->
+<!-- Core -->
 <script src="{{ asset('volt/html&css/vendor/@popperjs/core/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('volt/html&css/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
@@ -101,7 +100,7 @@
 
 <!-- Volt JS -->
 <script src="{{ asset('volt/hmtl&css/assets/js/volt.js') }}"></script>
-
+@routes
     
 </body>
 
