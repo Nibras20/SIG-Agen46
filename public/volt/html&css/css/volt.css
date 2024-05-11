@@ -28757,4 +28757,34 @@ article .h1, article .h2, article .h3, article .h4, article .h5, article .h6 {
 .datepicker-dropdown {
     z-index: 9999;
 }
+
+.input-icon {
+    position: relative;
+  }
+  .input-icon .form-control:not(:last-child),
+  .input-icon .form-select:not(:last-child) {
+    padding-right: 2.5rem;
+  }
+  .input-icon .form-control:not(:first-child),
+  .input-icon .form-select:not(:last-child) {
+    padding-left: 2.5rem;
+  }
+  
+  .input-icon-addon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    color: var(--tblr-icon-color);
+    pointer-events: none;
+    font-size: 1.2em;
+  }
+  .input-icon-addon:last-child {
+    right: 0;
+    left: auto;
+  }
 /*# sourceMappingURL=volt.css.map */

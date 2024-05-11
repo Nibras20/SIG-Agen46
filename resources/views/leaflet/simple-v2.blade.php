@@ -30,8 +30,8 @@
                     <li class="breadcrumb-item active" aria-current="page">Cek Lokasi</li>
                 </ol>
             </nav>
-            <h2 class="h4">Cek Lokasi</h2>
-            <p class="mb-0">Temukan lokasi Agen46 di sekitar anda.</p>
+            <h2 class="h4">Temukan Lokasi Agen46 di Sekitar Anda</h2>
+            {{-- <p class="mb-0">Temukan lokasi Agen46 di sekitar anda.</p> --}}
         </div>
     </div>
 
@@ -114,7 +114,7 @@
 
 
             $.each(storeLocation.data, (index, store) => {
-                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`${store.nama_agen} distance from user loc is ${store.distance}`);
+                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`${store.nama_agen} jarak anda ${store.distance} m dari lokasi agen`);
             })
 
         }

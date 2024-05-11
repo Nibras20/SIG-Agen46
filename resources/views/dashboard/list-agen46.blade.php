@@ -19,25 +19,15 @@
                 </ol>
             </nav>
             <h2 class="h4">List Agen46</h2>
-            <p class="mb-0">Temukan Data Agen46.</p>
+            {{-- <p class="mb-0">Temukan Data Agen46.</p> --}}
         </div>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="#" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
-                <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                    </path>
-                </svg>
-                New Plan
-            </a>
-            <div class="btn-group ms-2 ms-lg-3">
-                <button type="button" class="btn btn-sm btn-outline-gray-600">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-gray-600">Export</button>
-            </div>
-        </div>
+        
     </div>
+
     <div class="table-settings mb-4">
         <div class="row align-items-center justify-content-between">
+
+            {{-- Kolom Pencarian --}}
             <div class="col col-md-6 col-lg-3 col-xl-4">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
@@ -48,9 +38,10 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    <input type="text" class="form-control" placeholder="Search orders">
+                    <input type="text" class="form-control" placeholder="Cari">
                 </div>
             </div>
+
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
                 <div class="dropdown">
                     <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-1"
@@ -77,6 +68,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
@@ -95,7 +87,7 @@
                 <!-- Item -->
                 @foreach ($data_agen as $w)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $loop->iteration + $data_agen->firstItem()-1 }}</td>
                     <td><span class="fw-normal">{{ $w->nama_agen }}</span></td>
                     <td><span class="fw-normal">{{ $w->alamat }}</span></td>
                     <td><span class="fw-normal">{{ $w->kecamatan }}</span></td>
@@ -105,34 +97,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination mb-0">
-                    <li class="page-item">
-                        <a class="page-link" href="#">Previous</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item ">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">5</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="fw-normal small mt-4 mt-lg-0">Showing <b>5</b> out of <b>25</b> entries</div>
-        </div>
+        {{ $data_agen->links('vendor.pagination.bootstrap-5') }}
     </div>
     <div class="theme-settings card bg-gray-800 pt-2 collapse" id="theme-settings">
         <div class="card-body bg-gray-800 text-white pt-4">
