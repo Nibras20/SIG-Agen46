@@ -14,7 +14,7 @@ class AgenController extends Controller
         $userCoordinate = $request->userLocation;
 
         $data_agen->each(function($row) use ($userCoordinate) {
-            $row->distance = sqrt(pow($userCoordinate['latitude'] - $row->latitude, 2) + pow($userCoordinate['longitude'] - $row->longitude, 2)) * 111.319 * 1000;
+            $row->distance = round(sqrt(pow($userCoordinate['latitude'] - $row->latitude, 2) + pow($userCoordinate['longitude'] - $row->longitude, 2)) * 111.319 * 1000,1);
 
             return $row;
         });

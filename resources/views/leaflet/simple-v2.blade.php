@@ -114,7 +114,7 @@
 
 
             $.each(storeLocation.data, (index, store) => {
-                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`${store.nama_agen} jarak anda ${store.distance} m dari lokasi agen`);
+                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
             })
 
         }

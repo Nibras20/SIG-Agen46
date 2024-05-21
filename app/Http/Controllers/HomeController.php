@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 
+
 class HomeController extends Controller
 {
-    public function index()
+    public function home()
     {
         return view('dashboard.home');
     }
@@ -91,6 +92,57 @@ class HomeController extends Controller
                 $message = " KODE AGEN ". $kode_agen. " Sudah Ada";
             }
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan'.$message]);
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        $kode_agen = $request->kode_agen;
+        // $departemen = DB::table('departemen')->get();
+        $data_agen = DB::table('data_agen')->where('kode_agen', $kode_agen)->first();
+        return view('dashboard.admin.edit', compact('data_agen'));
+    }
+
+    public function update($kode_agen, Request $request)
+    {
+        $kode_agen = $request->kode_agen;
+        $nama_agen = $request->nama_agen;
+        $alamat = $request->alamat;
+        $kecamatan = $request->kecamatan;
+        $kota = $request->kota;
+        $keterangan = $request->keterangan;
+        $latitude = $request->latitude;
+        $longitude = $request->longitude;
+
+        try {
+            $data = [
+                'nama_agen' => $nama_agen,
+                'alamat' => $alamat,
+                'kecamatan' => $kecamatan,
+                'kota' => $kota,
+                'keterangan' => $keterangan,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                
+            ];
+            $update = DB::table('data_agen')->where('kode_agen', $kode_agen)->update($data);
+            if ($update) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Dipudate']);
+            }
+        } catch (\Exception $e) {
+            if($e->getCode()==23000){
+                $message = " KODE AGEN ". $kode_agen. " Sudah Ada";
+            }
+            return Redirect::back()->with(['warning' => 'Data Gagal Dipudate'.$message]);
+        }
+    }
+
+    public function delete($kode_agen){
+        $delete = DB::table('data_agen')->where('kode_agen', $kode_agen)->delete();
+        if($delete){
+            return Redirect::back()->with(['success'=>'Data Berhasil Dihpaus']);
+        } else{
+            return Redirect::back()->with(['warning'=>'Data Gagal Dihpaus']);
         }
     }
 

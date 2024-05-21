@@ -41,7 +41,7 @@
         <div class="col-lg">
           <div class="container-tight">
             <div class="text-center mb-4">
-              <a href="./panel" class="navbar-brand navbar-brand-autodark">
+              <a href="./admin" class="navbar-brand navbar-brand-autodark">
                 <img src="{{asset ('assets/img/logobni.png')}}" height="40" alt="image">
               </a>
             </div>
@@ -57,7 +57,7 @@
                   @csrf
                   <div class="mb-3">
                     <label class="form-label">Alamat Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="xxxx@email.com" autocomplete="off">
+                    <input type="email" name="email" class="form-control" placeholder="xxxx@email.com" autocomplete="on">
                   </div>
                   <div class="mb-2">
                     <label class="form-label">

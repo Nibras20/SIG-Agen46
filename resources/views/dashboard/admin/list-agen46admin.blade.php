@@ -106,6 +106,7 @@
                     <th class="border-gray-200">Keterangan</th>
                     <th class="border-gray-200">Longitude</th>
                     <th class="border-gray-200">Latitude</th>
+                    <th class="border-gray-200">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +121,39 @@
                         <td><span class="fw-normal">{{ $w->keterangan }}</span></td>
                         <td><span class="fw-normal">{{ $w->longitude }}</span></td>
                         <td><span class="fw-normal">{{ $w->latitude }}</span></td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="#" class="edit btn btn-info btn-sm mr" kode_agen="{{ $w->kode_agen }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                        </path>
+                                        <path d="M16 5l3 3"></path>
+                                    </svg>
+                                </a>
+                                <form action="agen/{{ $w->kode_agen }}/delete" method="POST"
+                                    style="margin-left:5px">
+                                    @csrf
+                                    <a class="btn btn-danger btn-sm delete-confirm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M4 7l16 0"></path>
+                                            <path d="M10 11l0 6"></path>
+                                            <path d="M14 11l0 6"></path>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -383,6 +417,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit -->
+    <div class="modal modal-blur fade" id="modal-editagen" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data Agen46</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadeditform">
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('javascript')
@@ -392,45 +441,45 @@
                 $("#modal-inputagen").modal("show");
             });
 
-            // $(".edit").click(function() {
-            //     var nik = $(this).attr('nik');
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/karyawan/edit',
-            //         cache: false,
-            //         data: {
-            //             _token: "{{ csrf_token() }}",
-            //             nik: nik
-            //         },
-            //         success: function(respond) {
-            //             $("#loadeditform").html(respond);
-            //         }
-            //     });
-            //     $("#modal-editkaryawan").modal("show");
-            // });
+            $(".edit").click(function() {
+                var kode_agen = $(this).attr('kode_agen');
+                $.ajax({
+                    type: 'POST',
+                    url: 'agen/edit',
+                    cache: false,
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kode_agen: kode_agen
+                    },
+                    success: function(respond) {
+                        $("#loadeditform").html(respond);
+                    }
+                });
+                $("#modal-editagen").modal("show");
+            });
 
-            // $(".delete-confirm").click(function(e) {
-            //     var form = $(this).closest('form');
-            //     e.preventDefault();
-            //     Swal.fire({
-            //         title: 'Apakah Anda Yakin Menghapus Data Ini?',
-            //         text: "Jik Ya Maka Data Akan Terhapus Permanen",
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonColor: '#3085d6',
-            //         cancelButtonColor: '#d33',
-            //         confirmButtonText: 'Ya, Hapus!'
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             form.submit();
-            //             Swal.fire(
-            //                 'Terhapus!',
-            //                 'Data Berhasil Dihapus.',
-            //                 'success'
-            //             )
-            //         }
-            //     })
-            // });
+            $(".delete-confirm").click(function(e) {
+                var form = $(this).closest('form');
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah Anda Yakin Menghapus Data Ini?',
+                    text: "Jik Ya Maka Data Akan Terhapus Permanen",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                        Swal.fire(
+                            'Terhapus!',
+                            'Data Berhasil Dihapus.',
+                            'success'
+                        )
+                    }
+                })
+            });
 
             $("#frmAgen").submit(function() {
                 var kode_agen = $("#kode_agen").val();
