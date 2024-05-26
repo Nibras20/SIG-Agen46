@@ -15,7 +15,7 @@
                         </a>
                     </li>
 
-                    <li class="breadcrumb-item active" aria-current="page">List Agen46</li>
+                    <li class="breadcrumb-item active" aria-current="page">List BNI Agen46</li>
                 </ol>
             </nav>
             <h2 class="h4">List Agen46</h2>

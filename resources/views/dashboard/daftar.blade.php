@@ -6,6 +6,13 @@
             box-sizing: border-box
         }
 
+        .gambar1 {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
         .nama1 {
             color: #006677;
             font-size: 30px;
@@ -93,7 +100,7 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                    <li class="breadcrumb-item active" aria-current="page">Gabung BNI Agen46</li>
                 </ol>
             </nav>
         </div>
@@ -102,17 +109,8 @@
     <!-- Slideshow container -->
     <div class="slideshow-container">
         <!-- Full-width images with number and caption text -->
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/bni/beranda/promo/images/St012.jpg" style="width:100%">
-        </div>
-
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/BNI-CONTACTLESS-CC-2024.png" style="width:100%">
-        </div>
-
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/KV-BNI-Mobile-Banking-New-UI.jpg"
-                style="width:100%">
+        <div class="gambar1">
+            <img src="{{ asset('assets/img/daftaragen46.jpg') }}">
         </div>
     </div>
     <br>
@@ -121,55 +119,38 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-3">
         <div class="d-block mt-3 mb-4 mb-md-0">
             <h2 class="nama1">BNI Agen46</h2>
-            <h2 class="nama2">Melayani Paling Dekat</h2>
-            <p class="mb-0"><b>BNI Agen46</b> adalah mitra BNI (perorangan atau badan hukum yang telah bekerjasama dengan BNI)
-                untuk menyediakan layanan perbankan kepada masyarakat (Layanan Laku Pandai, Layanan LKD dan Layanan
-                e-Payment).</p>
+            <h2 class="nama2">Cara Mudah Menjadi BNI Agen46</h2>
+            <p class="mb-0"><b>Melalui Cabang BNI</b></p>
+                <licust>
+                    <ul>
+                        <li>Calon BNI Agen46 (Perorangan/Badan Hukum) mendatangi Kantor Cabang BNI terdekat.</li>
+                        <li>Calon BNI Agen46 mengisi formulir pendaftaran dan melampirkan dokumen pendukung.</li>
+                        <li>BNI akan memproses permohonan Calon BNI Agen46 dan akan menginformasikan kepada Calon Agen46 apabila permohonan selesai diproses.</li>
+                        <li>Calon BNI Agen46 menandatangani Perjanjian Kerjasama (PKS) Keagenan dengan BNI.</li>
+                        <li>BNI Agen46 akan menerima kelengkapan operasional berupa Sertifikat keagenan, Spanduk keagenan, Akses Aplikasi Transaksi & Brosur/Flyer untuk BNI Agen46 dan Nasabah.</li>
+                    </ul>
+                </licust>
+
+            <p class="mb-0"><b>Melalui Online Registration</b></p>
+            <p class="mb-0">Kini anda dapat menjadi BNI Agen46 dengan melakukan pendaftaran/registrasi melalui
+                <a target="_blank" href="https://agenbni46.bni.co.id/register"><u>situs registrasi online BNI Agen46 </u></a>dengan melengkapi data-data yang dibutuhkan sesuai formulir.</p>
+            <br>
+            <p class="mb-0"><b>Melalui Aplikasi BNI Experience</b></p>
+            <p class="mb-0">Unduh Aplikasi BNI Experience di <a target="_blank" href="https://play.google.com/store/apps/details?id=id.co.bni.newagenbni46&pcampaignid=web_share"><u>Google Play Store</u></a>.</p>
             <br>
 
-            <h2 class="nama3">Fitur dan Layanan BNI Agen46</h2>
+            <h2 class="nama2">Keuntungan Menjadi BNI Agen46</h2>
+            <p class="mb-0"><b>Berikut Beberapa Keuntungan Menjadi BNI Agen46</b></p>
+                <licust>
+                    <ul>
+                        <li>Tidak dikenakan biaya pendaftaran.</li>
+                        <li>Komisi menarik dari setiap transaksi.</li>
+                        <li>Layanan dan fitur terlengkap.</li>
+                        <li>Kemudahan mendapatkan modal usaha.</li>
+                        <li>Menjadi Agen resmi perbankan.</li>
+                    </ul>
+                </licust>
             
-
-            <ulcust>
-                <licust>
-                    <ul>
-                        <h2 class="h5">Layanan Laku Pandai</h2>
-                        <li>Buka Rekening Tabungan BNI Pandai.</li>
-                        <li>Setoran Tunai.</li>
-                        <li>Tarik Tunai.</li>
-
-                    </ul>
-                </licust>
-
-                <licust>
-                    <ul>
-                        <h2 class="h5">Layanan LKD</h2>
-                        <li>Pendaftaran (Register) Uang Elektronik.</li>
-                        <li>Setor Tunai (Cash In) Uang Elektronik.</li>
-                        <li>Tarik Tunai (Cash Out) Uang Elektronik.</li>
-
-                    </ul>
-                </licust>
-
-                <licust>
-                    <ul>
-                        <h2 class="h5">Layanan E-Payment</h2>
-                        <li>Transfer (Antara BNI dan Online antar Bank).</li>
-                        <li>Pembelian (Pulsa, Paket Data & Token Listrik).</li>
-                        <li>Pembayaran (Tagihan Listrik, PDAM, BPJS, dll).</li>
-
-                    </ul>
-                </licust>
-            </ulcust>
-
-            <h2 class="nama2">Produk Unggulan BNI</h2>
-            <p class="mb-0">BNI memperkuat komitmennya untuk selalu hadir dan mendukung beragam aspek pertumbuhan nasabah, dengan fokus pada menyediakan solusi keuangan terintegrasi berbasis digital serta dukungan jaringan Go Global.
-                <br><br>
-                Dalam segmen ritel, pengguna BNI Mobile Banking meningkat 20,9% YoY menjadi 15,6 juta user pada Q3 2023, yang diikuti dengan peningkatan jumlah transaksi sebesar 75,3% YoY mencapai 738 juta transaksi, dan nilai transaksi yang tumbuh 53,6% YoY menjadi Rp 874 triliun.
-                <br><br>
-                Angka-angka ini mencerminkan pergeseran nasabah BNI yang terus meningkatkan penggunaan platform digital sebagai sarana utama untuk transaksi keuangan, sejalan dengan strategi BNI untuk menjadikan BNI Mobile Banking sebagai solusi keuangan komprehensif bagi nasabah.
-                <br><br>    
-                Dalam mendukung langkah-langkah strategisnya, BNI telah menghadirkan 4 produk unggulan yang bertujuan untuk memperkuat bisnis transaksi ritel dan institusi serta meningkatkan solusi perbankan yang ditawarkan kepada UMKM yang ingin berkembang secara global.</p>
         </div>
     </div>
 @endsection

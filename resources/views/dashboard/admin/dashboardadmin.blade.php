@@ -1,160 +1,132 @@
 @extends('layouts.dashboardadmin-volt')
 
+@section('css')
+    <style>
+        * {
+            box-sizing: border-box
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Hide the images by default */
+        .mySlides {
+            display: none;
+        }
+
+        /* Fading animation */
+        .fadess {
+            animation-name: fadess;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fadess {
+            from {
+                opacity: .4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+
+    </style>
+@endsection
+
 @section('content')
+    {{-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4"> --}}
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                <li class="breadcrumb-item">
+                    <a href="home">
+                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+        </nav>
+    </div>
+    {{-- </div> --}}
+
+    <!-- Slideshow container -->
+    <div class="slideshow-container">
+        <!-- Full-width images with number and caption text -->
+        <div class="mySlides fadess">
+            <img src="https://www.bni.co.id/portals/1/bni/beranda/promo/images/St012.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fadess">
+            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/BNI-CONTACTLESS-CC-2024.png" style="width:100%">
+        </div>
+
+        <div class="mySlides fadess">
+            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/KV-BNI-Mobile-Banking-New-UI.jpg"
+                style="width:100%">
+        </div>
+    </div>
+    <br>
+
+
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
-            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                    <li class="breadcrumb-item">
-                        <a href="home">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                                </path>
-                            </svg>
-                        </a>
-                    </li>
-                    {{-- <li class="breadcrumb-item"><a href="home">Dashboard</a></li> --}}
-                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                </ol>
-            </nav>
-            <h2 class="h4">All Orders</h2>
-            <p class="mb-0">Your web analytics dashboard template.</p>
+            <h2 class="h2">BNI Agen46</h2>
+            <h2 class="h4">Melayani Paling Dekat</h2>
+            <p class="mb-0">BNI Agen46 adalah mitra BNI (perorangan atau badan hukum yang telah bekerjasama dengan BNI)
+                untuk menyediakan layanan perbankan kepada masyarakat (Layanan Laku Pandai, Layanan LKD dan Layanan
+                e-Payment).</p>
+            <br>
+
+            <h2 class="h4">Fitur dan Layanan BNI Agen46</h2>
+            <h2 class="h5">Layanan Laku Pandai</h2>
+            <p>1. Buka Rekening Tabungan BNI Pandai.
+            <br>2. Setoran Tunai.
+            <br>3. Tarik Tunai.</p>
+            
+            <h2 class="h5">Layanan LKD</h2>
+            <p>1. Pendaftaran (Register) Uang Elektronik.
+            <br>2. Setor Tunai (Cash In) Uang Elektronik.
+            <br>3. Tarik Tunai (Cash Out) Uang Elektronik.</p>
+
+            <h2 class="h5">Layanan E-Payment</h2>
+            <p>1. Transfer (Antara BNI dan Online antar Bank).
+            <br>2. Pembelian.
+            <br>3. Pembayaran.</p>
+            
+
         </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-xl-4 mb-4">
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div
-                        class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                        <div class="icon-shape icon-shape-primary rounded me-4 me-sm-0">
-                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div class="d-sm-none">
-                            <h2 class="h5">Customers</h2>
-                            <h3 class="fw-extrabold mb-1">345,678</h3>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-7 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Customers</h2>
-                            <h3 class="fw-extrabold mb-2">345k</h3>
-                        </div>
-                        <small class="d-flex align-items-center text-gray-500">
-                            Feb 1 - Apr 1,
-                            <svg class="icon icon-xxs text-gray-500 ms-2 me-1" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            USA
-                        </small>
-                        <div class="small d-flex mt-1">
-                            <div>Since last month <svg class="icon icon-xs text-success" fill="currentColor"
-                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span class="text-success fw-bolder">22%</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-4 mb-4">
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div
-                        class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                        <div class="icon-shape icon-shape-secondary rounded me-4 me-sm-0">
-                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div class="d-sm-none">
-                            <h2 class="fw-extrabold h5">Revenue</h2>
-                            <h3 class="mb-1">$43,594</h3>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-7 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0">Revenue</h2>
-                            <h3 class="fw-extrabold mb-2">$43,594</h3>
-                        </div>
-                        <small class="d-flex align-items-center text-gray-500">
-                            Feb 1 - Apr 1,
-                            <svg class="icon icon-xxs text-gray-500 ms-2 me-1" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            GER
-                        </small>
-                        <div class="small d-flex mt-1">
-                            <div>Since last month <svg class="icon icon-xs text-danger" fill="currentColor"
-                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span class="text-danger fw-bolder">2%</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-sm-6 col-xl-4 mb-4">
-        <div class="card border-0 shadow">
-            <div class="card-body">
-                <div class="row d-block d-xl-flex align-items-center">
-                    <div
-                        class="col-12 col-xl-5 text-xl-center mb-3 mb-xl-0 d-flex align-items-center justify-content-xl-center">
-                        <div class="icon-shape icon-shape-tertiary rounded me-4 me-sm-0">
-                            <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div class="d-sm-none">
-                            <h2 class="fw-extrabold h5"> Bounce Rate</h2>
-                            <h3 class="mb-1">50.88%</h3>
-                        </div>
-                    </div>
-                    <div class="col-12 col-xl-7 px-xl-0">
-                        <div class="d-none d-sm-block">
-                            <h2 class="h6 text-gray-400 mb-0"> Bounce Rate</h2>
-                            <h3 class="fw-extrabold mb-2">50.88%</h3>
-                        </div>
-                        <small class="text-gray-500">
-                            Feb 1 - Apr 1
-                        </small>
-                        <div class="small d-flex mt-1">
-                            <div>Since last month <svg class="icon icon-xs text-success" fill="currentColor"
-                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg><span class="text-success fw-bolder">4%</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 @endsection
+
+@push('javascript')
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1
+            }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
+        }
+    </script>
+@endpush

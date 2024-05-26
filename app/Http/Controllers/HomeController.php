@@ -36,6 +36,11 @@ class HomeController extends Controller
         return view('leaflet.simple-v2', compact('data_agen'));
     }
 
+    public function daftar()
+    {
+        return view('dashboard.daftar');
+    }
+    
     public function about()
     {
         return view('dashboard.about');

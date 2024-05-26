@@ -116,7 +116,7 @@
             </div>
 
             <!--SIDEBAR NAV-->
-            <ul class="nav flex-column pt-   pt-md-0">
+            <ul class="nav flex-column pt-md-0">
                 <li class="nav-item">
                     <a href="../../index.html" class="nav-link d-flex align-items-center">
                         <span class="sidebar-icon">
@@ -180,10 +180,27 @@
                                 <path d="M19 18v.01" />
                             </svg>
                         </span>
-                        <span class="sidebar-text">Cek Lokasi</span>
+                        <span class="sidebar-text">Cek Lokasi Agen46</span>
                     </a>
                 </li>
 
+                {{-- <li class="nav-item {{ Request::is('about') ? 'active' : '' }}">
+                    <a href="{{ route('daftar') }}" class="nav-link ">
+                        <span class="sidebar-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-checklist">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8" />
+                                <path d="M14 19l2 2l4 -4" />
+                                <path d="M9 8h4" />
+                                <path d="M9 12h2" />
+                            </svg>
+                        </span>
+                        <span class="sidebar-text">Gabung BNI Agen46</span>
+                    </a>
+                </li> --}}
                 
                 <!--SIDEBAR MENU-->
 
@@ -409,24 +426,24 @@
         <footer class="bg-white rounded shadow p-3 mb-4 mt-4">
             <div class="row">
                 <div class="col-12 col-md-4 col-xl-6 mb-4 mb-md-0">
-                    <p class="mb-0 text-center text-lg-start">© 2019-<span class="current-year"></span> <a
-                            class="text-primary fw-normal" href="https://themesberg.com"
-                            target="_blank">Themesberg</a></p>
+                    <p class="mb-0 text-center text-lg-start">© 2024-<span class="current-year"></span> <a
+                            class="text-primary fw-normal" href=""
+                            target="_blank">PT Bank Negara Indonesia (Persero) Tbk</a></p>
                 </div>
                 <div class="col-12 col-md-8 col-xl-6 text-center text-lg-start">
                     <!-- List -->
                     <ul class="list-inline list-group-flush list-group-borderless text-md-end mb-0">
                         <li class="list-inline-item px-0 px-sm-2">
-                            <a href="https://themesberg.com/about">About</a>
+                            <a target="_blank" href="https://www.facebook.com/bni">Facebook</a>
                         </li>
                         <li class="list-inline-item px-0 px-sm-2">
-                            <a href="https://themesberg.com/themes">Themes</a>
+                            <a target="_blank" href="https://twitter.com/BNI">Twitter</a>
                         </li>
                         <li class="list-inline-item px-0 px-sm-2">
-                            <a href="https://themesberg.com/blog">Blog</a>
+                            <a target="_blank" href="https://www.instagram.com/bni46/">Instagram</a>
                         </li>
                         <li class="list-inline-item px-0 px-sm-2">
-                            <a href="https://themesberg.com/contact">Contact</a>
+                            <a target="_blank" href="tel:1500046">BNI Call 1500046</a>
                         </li>
                     </ul>
                 </div>

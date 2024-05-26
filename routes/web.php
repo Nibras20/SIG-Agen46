@@ -15,6 +15,7 @@ Route::get('list-agen46', [HomeController::class, 'list_agen46'])->name('list-ag
 //Route::get('simple-map', [HomeController::class, 'simple_map'])->name('simple-map');
 Route::get('simple-v2', [HomeController::class, 'simple_v2'])->name('simple-v2');
 Route::get('about', [HomeController::class, 'about'])->name('about');
+Route::get('daftar', [HomeController::class, 'daftar'])->name('daftar');
 Route::get('testing', [HomeController::class, 'testing'])->name('testing');
 //Route::get('dashboardadmin', [HomeController::class, 'dashboardadmin'])->name('dashboardadmin');
 
@@ -36,4 +37,5 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('agen/{kode_agen}/update', [HomeController::class, 'update']);
     Route::post('agen/{kode_agen}/delete', [HomeController::class, 'delete']);
     Route::get('simple-v2admin', [HomeController::class, 'simple_v2admin'])->name('simple-v2admin');
+    
 });

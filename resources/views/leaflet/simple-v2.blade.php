@@ -3,6 +3,7 @@
 @section('css')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
 
     <style>
         #map {
@@ -27,11 +28,10 @@
                         </a>
                     </li>
 
-                    <li class="breadcrumb-item active" aria-current="page">Cek Lokasi</li>
+                    <li class="breadcrumb-item active" aria-current="page">Cek Lokasi BNI Agen46</li>
                 </ol>
             </nav>
             <h2 class="h4">Temukan Lokasi Agen46 di Sekitar Anda</h2>
-            {{-- <p class="mb-0">Temukan lokasi Agen46 di sekitar anda.</p> --}}
         </div>
     </div>
 
@@ -50,18 +50,21 @@
 @endsection
 
 @push('javascript')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
     <script>
-        
         var lokasi = document.getElementById('lokasi');
+        var routingControl = null;
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
         }
 
-        function getStoreLocationDistance(userLocation)
-        {
+        function getStoreLocationDistance(userLocation) {
             return $.ajax({
                 url: route('api.agen.json'),
                 method: 'GET',
@@ -69,7 +72,7 @@
                     userLocation
                 },
                 async: false
-            }).responseJSON
+            }).responseJSON;
         }
 
         function successCallback(position) {
@@ -78,50 +81,72 @@
 
             let storeLocation = getStoreLocationDistance(userLocation);
 
-            // console.log(storeLocation)
-
-            // var map = L.map('map').setView([-7.63336818122693, 111.54137712336089], 18);
-
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            var circle = L.circle([userLocation.latitude, userLocation.longitude], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: 25
-            }).addTo(map);
-
-            var MarkerIcon = L.Icon.extend({
-                options: {
+            var userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
+                icon: L.icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
                     iconSize: [25, 41],
                     iconAnchor: [12, 41],
                     popupAnchor: [1, -34]
-                }
+                })
+            }).addTo(map).bindPopup("Lokasi Saya").openPopup();
+
+            // var circle = L.circle([userLocation.latitude, userLocation.longitude], {
+            //     color: 'green',
+            //     fillColor: '#BCFEA3',
+            //     fillOpacity: 0.5,
+            //     radius: 1000
+            // }).addTo(map);
+
+            // Kode Asal
+            // $.each(storeLocation.data, (index, store) => {
+            //     L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(
+            //         `Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
+            // })
+
+            // Modifikasi
+            storeLocation.data.forEach((store) => {
+                let markerIconUrl = store.distance > 1000 ?
+                    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' :
+                    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
+
+                let storeMarker = L.marker([store.latitude, store.longitude], {
+                    icon: L.icon({
+                        iconUrl: markerIconUrl,
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34]
+                    })
+                }).addTo(map).bindPopup(
+                    `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                    Alamat Agen46 : ${store.alamat} <br>
+                    Kecamatan Agen46 : ${store.kecamatan} <br>
+                    Kota/Kab Agen46 : ${store.kota} <br>
+                    Keterangan : ${store.keterangan} <br>
+                    <b>Jarak anda ${store.distance} meter dari lokasi agen</b>`);
+
+                storeMarker.on('click', function() {
+                    if (routingControl) {
+                        map.removeControl(routingControl);
+                    }
+                    routingControl = L.Routing.control({
+                        waypoints: [
+                            L.latLng(userLocation.latitude, userLocation.longitude),
+                            L.latLng(store.latitude, store.longitude)
+                        ],
+                        routeWhileDragging: true
+                    }).addTo(map);
+                });
             });
-
-            
-
-            var lokasiuser = new MarkerIcon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
-            });
-
-            var lokasiuser = L.marker([userLocation.latitude, userLocation.longitude], {
-                icon: lokasiuser
-            }).addTo(map).bindPopup("Lokasi Saya");
-
-
-            $.each(storeLocation.data, (index, store) => {
-                L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(`Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
-            })
-
         }
 
-        function errorCallback() {
-
+        function errorCallback(error) {
+            console.error("Geolocation error: ", error);
         }
-        
     </script>
 @endpush
+
