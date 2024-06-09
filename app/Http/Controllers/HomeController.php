@@ -15,10 +15,10 @@ class HomeController extends Controller
         return view('dashboard.home');
     }
 
-    public function list_agen46()
+    public function list_agen46(Request $request)
     {
-        $data_agen = DB::table('data_agen')->orderBy('kode_agen')
-        ->paginate(5);
+        $perPage = $request->input('perPage', 5);
+        $data_agen = DB::table('data_agen')->orderBy('kode_agen')->paginate($perPage);
         return view('dashboard.list-agen46', compact('data_agen'));
     }
 
@@ -40,7 +40,7 @@ class HomeController extends Controller
     {
         return view('dashboard.daftar');
     }
-    
+
     public function about()
     {
         return view('dashboard.about');
@@ -52,16 +52,16 @@ class HomeController extends Controller
         return view('testing', compact('data_agen'));
     }
 
-    
+
     public function dashboardadmin()
     {
         return view('dashboard.admin.dashboardadmin');
     }
 
-    public function list_agen46admin()
+    public function list_agen46admin(Request $request)
     {
-        $data_agen = DB::table('data_agen')->orderBy('kode_agen')
-        ->paginate(5);
+        $perPage = $request->input('perPage', 5);
+        $data_agen = DB::table('data_agen')->orderBy('kode_agen')->paginate($perPage);
         return view('dashboard.admin.list-agen46admin', compact('data_agen'));
     }
 
@@ -86,17 +86,17 @@ class HomeController extends Controller
                 'keterangan' => $keterangan,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                
+
             ];
             $simpan = DB::table('data_agen')->insert($data);
             if ($simpan) {
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             }
         } catch (\Exception $e) {
-            if($e->getCode()==23000){
-                $message = " KODE AGEN ". $kode_agen. " Sudah Ada";
+            if ($e->getCode() == 23000) {
+                $message = " KODE AGEN " . $kode_agen . " Sudah Ada";
             }
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan'.$message]);
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan' . $message]);
         }
     }
 
@@ -128,26 +128,27 @@ class HomeController extends Controller
                 'keterangan' => $keterangan,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                
+
             ];
             $update = DB::table('data_agen')->where('kode_agen', $kode_agen)->update($data);
             if ($update) {
                 return Redirect::back()->with(['success' => 'Data Berhasil Dipudate']);
             }
         } catch (\Exception $e) {
-            if($e->getCode()==23000){
-                $message = " KODE AGEN ". $kode_agen. " Sudah Ada";
+            if ($e->getCode() == 23000) {
+                $message = " KODE AGEN " . $kode_agen . " Sudah Ada";
             }
-            return Redirect::back()->with(['warning' => 'Data Gagal Dipudate'.$message]);
+            return Redirect::back()->with(['warning' => 'Data Gagal Dipudate' . $message]);
         }
     }
 
-    public function delete($kode_agen){
+    public function delete($kode_agen)
+    {
         $delete = DB::table('data_agen')->where('kode_agen', $kode_agen)->delete();
-        if($delete){
-            return Redirect::back()->with(['success'=>'Data Berhasil Dihpaus']);
-        } else{
-            return Redirect::back()->with(['warning'=>'Data Gagal Dihpaus']);
+        if ($delete) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihpaus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihpaus']);
         }
     }
 

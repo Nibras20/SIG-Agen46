@@ -1,182 +1,275 @@
-@extends('layouts.dashboardadmin-volt')
+@extends('layouts.dashboard-volt')
 
 @section('css')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+
     <style>
-        * {
-            box-sizing: border-box
+        #map {
+            height: 400px;
         }
 
-        /* Slideshow container */
-        .slideshow-container {
-            max-width: 1000px;
-            position: relative;
-            margin: auto;
-        }
-
-        /* Hide the images by default */
-        .mySlides {
-            display: none;
-        }
-
-        /* Fading animation */
-        .fadess {
-            animation-name: fadess;
-            animation-duration: 1.5s;
-        }
-
-        @keyframes fadess {
-            from {
-                opacity: .4
-            }
-
-            to {
-                opacity: 1
-            }
+        .location-inputs {
+            margin-bottom: 15px;
         }
     </style>
 @endsection
 
 @section('content')
-    <div class="d-block mb-4 mb-md-0">
-        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                <li class="breadcrumb-item">
-                    <a href="home">
-                        <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                            </path>
-                        </svg>
-                    </a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-            </ol>
-        </nav>
-    </div>
-
-    <!-- Slideshow container -->
-    <div class="slideshow-container">
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/bni/beranda/promo/images/St012.jpg" style="width:100%">
-        </div>
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/BNI-CONTACTLESS-CC-2024.png" style="width:100%">
-        </div>
-        <div class="mySlides fadess">
-            <img src="https://www.bni.co.id/portals/1/BNI/ebanking/Images/KV-BNI-Mobile-Banking-New-UI.jpg"
-                style="width:100%">
-        </div>
-    </div>
-    <br>
-
-    <!-- Edit Slideshow Button -->
-    <div class="text-center">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editSlideshowModal">Edit Slideshow</button>
-    </div>
-
-    <!-- Edit Slideshow Modal -->
-    <div class="modal fade" id="editSlideshowModal" tabindex="-1" aria-labelledby="editSlideshowModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editSlideshowModalLabel">Edit Slideshow</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="slideshowForm">
-                        <div class="mb-3">
-                            <label for="imageUrl" class="form-label">Image URL</label>
-                            <input type="text" class="form-control" id="imageUrl" placeholder="Enter image URL">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Image</button>
-                    </form>
-                    <div id="slideshowImages" class="mt-3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
-            <h2 class="h2">BNI Agen46</h2>
-            <h2 class="h4">Melayani Paling Dekat</h2>
-            <p class="mb-0">BNI Agen46 adalah mitra BNI (perorangan atau badan hukum yang telah bekerjasama dengan BNI)
-                untuk menyediakan layanan perbankan kepada masyarakat (Layanan Laku Pandai, Layanan LKD dan Layanan
-                e-Payment).</p>
-            <br>
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="home">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                </path>
+                            </svg>
+                        </a>
+                    </li>
 
-            <h2 class="h4">Fitur dan Layanan BNI Agen46</h2>
-            <h2 class="h5">Layanan Laku Pandai</h2>
-            <p>1. Buka Rekening Tabungan BNI Pandai.
-            <br>2. Setoran Tunai.
-            <br>3. Tarik Tunai.</p>
-            
-            <h2 class="h5">Layanan LKD</h2>
-            <p>1. Pendaftaran (Register) Uang Elektronik.
-            <br>2. Setor Tunai (Cash In) Uang Elektronik.
-            <br>3. Tarik Tunai (Cash Out) Uang Elektronik.</p>
+                    <li class="breadcrumb-item active" aria-current="page">Cek Lokasi BNI Agen46</li>
+                </ol>
+            </nav>
+            <h2 class="h4">Temukan Lokasi Agen46 di Sekitar Anda</h2>
+        </div>
+    </div>
 
-            <h2 class="h5">Layanan E-Payment</h2>
-            <p>1. Transfer (Antara BNI dan Online antar Bank).
-            <br>2. Pembelian.
-            <br>3. Pembayaran.</p>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="location-inputs">
+                            <button id="useGeolocation" class="btn btn-primary">Gunakan Lokasi Saya</button>
+                            <button id="useManualLocation" class="btn btn-secondary">Gunakan Lokasi Manual</button>
+                            <button id="toggleCircleButton" class="btn btn-secondary">Radius</button>
+                            <div id="manualLocationInputs" style="display: none;">
+                                <label for="latitude">Latitude:</label>
+                                <input type="text" id="latitude" class="form-control" placeholder="Masukkan Latitude">
+                                <label for="longitude">Longitude:</label>
+                                <input type="text" id="longitude" class="form-control" placeholder="Masukkan Longitude">
+                                <button id="submitManualLocation" class="btn btn-success mt-2">Submit</button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="lokasi">
+                        <div id="map"></div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Toko</th>
+                                        <th>Alamat</th>
+                                        <th>Jarak (meter)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="storeTableBody">
+                                    <!-- Data to be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
 
 @push('javascript')
-    <script>
-        let slideIndex = 0;
-        let slides = document.getElementsByClassName("mySlides");
-        showSlides();
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
-        function showSlides() {
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+    <script>
+        var lokasi = document.getElementById('lokasi');
+        var routingControl = null;
+        var circle = null;
+        var map;
+
+        // Function to get and use geolocation
+        function useGeolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
             }
-            slideIndex++;
-            if (slideIndex > slides.length) {
-                slideIndex = 1;
-            }
-            slides[slideIndex - 1].style.display = "block";
-            setTimeout(showSlides, 5000); // Change image every 5 seconds
         }
 
-        // Add/Edit slideshow functionality
-        document.getElementById('slideshowForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const imageUrl = document.getElementById('imageUrl').value;
-            if (imageUrl) {
-                const newSlide = document.createElement('div');
-                newSlide.className = 'mySlides fadess';
-                newSlide.innerHTML = `<img src="${imageUrl}" style="width:100%">`;
-                document.querySelector('.slideshow-container').appendChild(newSlide);
-                updateSlideList();
-                document.getElementById('imageUrl').value = '';
+        document.getElementById('useGeolocation').addEventListener('click', function() {
+            document.getElementById('manualLocationInputs').style.display = 'none';
+            useGeolocation();
+        });
+
+        document.getElementById('useManualLocation').addEventListener('click', function() {
+            document.getElementById('manualLocationInputs').style.display = 'block';
+        });
+
+        document.getElementById('submitManualLocation').addEventListener('click', function() {
+            let lat = parseFloat(document.getElementById('latitude').value);
+            let lng = parseFloat(document.getElementById('longitude').value);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                let userLocation = {
+                    latitude: lat,
+                    longitude: lng
+                };
+                initializeMap(userLocation);
+            } else {
+                alert('Masukkan koordinat yang valid');
             }
         });
 
-        function updateSlideList() {
-            const slideList = document.getElementById('slideshowImages');
-            slideList.innerHTML = '';
-            for (let i = 0; i < slides.length; i++) {
-                const slideItem = document.createElement('div');
-                slideItem.className = 'slide-item';
-                slideItem.innerHTML = `
-                    <img src="${slides[i].querySelector('img').src}" style="width: 100px; height: auto;">
-                    <button onclick="removeSlide(${i})" class="btn btn-danger btn-sm">Remove</button>
-                `;
-                slideList.appendChild(slideItem);
+        function getStoreLocationDistance(userLocation) {
+            return $.ajax({
+                url: route('api.agen.json'),
+                method: 'GET',
+                data: {
+                    userLocation
+                },
+                async: false
+            }).responseJSON;
+        }
+
+        function successCallback(position) {
+            let userLocation = position.coords;
+            initializeMap(userLocation);
+        }
+
+        function errorCallback(error) {
+            console.error("Geolocation error: ", error);
+        }
+
+        function initializeMap(userLocation) {
+            if (map) {
+                map.remove();
+            }
+
+            map = L.map('map').setView([userLocation.latitude, userLocation.longitude], 18);
+
+            let storeLocation = getStoreLocationDistance(userLocation);
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            var userMarker = L.marker([userLocation.latitude, userLocation.longitude], {
+                icon: L.icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34]
+                })
+            }).addTo(map).bindPopup("Lokasi Saya").openPopup();
+
+            if (circle) {
+                map.removeLayer(circle);
+            }
+
+            circle = L.circle([userLocation.latitude, userLocation.longitude], {
+                color: 'green',
+                fillColor: '#BCFEA3',
+                fillOpacity: 0.5,
+                radius: 1000
+            }).addTo(map);
+
+            // Euclidean
+            // $.each(storeLocation.data, (index, store) => {
+            //     L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(
+            //         `Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
+            // })
+
+            // Modifikasi Euclidean
+            storeLocation.data.forEach((store) => {
+                let markerIconUrl = store.distance > 1000 ?
+                    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' :
+                    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
+
+                let storeMarker = L.marker([store.latitude, store.longitude], {
+                    icon: L.icon({
+                        iconUrl: markerIconUrl,
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34]
+                    })
+                }).addTo(map).bindTooltip(
+                    `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                    Jarak anda ${store.distance} meter dari lokasi agen`, {
+                        permanent: true,
+                        direction: "top",
+                        offset: [0, -36]
+                    } // Atur pop up diatas marker
+                ).bindPopup(
+                    `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                    Alamat Agen46 : ${store.alamat} <br>
+                    Kecamatan Agen46 : ${store.kecamatan} <br>
+                    Kota/Kab Agen46 : ${store.kota} <br>
+                    Keterangan : ${store.keterangan} <br>
+                    <b>Jarak anda ${store.distance} meter dari lokasi agen</b>`
+                );
+
+                storeMarker.on('click', function() {
+                    storeMarker.unbindTooltip();
+                    storeMarker.openPopup();
+
+                    storeMarker.on('popupclose', function() {
+                        storeMarker.bindTooltip(
+                            `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                            Jarak anda ${store.distance} meter dari lokasi agen`, {
+                                permanent: true,
+                                direction: "top",
+                                offset: [0, -36]
+                            } // Atur pop up diatas marker
+                        );
+                    });
+
+                    if (routingControl) {
+                        map.removeControl(routingControl);
+                    }
+                    routingControl = L.Routing.control({
+                        waypoints: [
+                            L.latLng(userLocation.latitude, userLocation.longitude),
+                            L.latLng(store.latitude, store.longitude)
+                        ],
+                        routeWhileDragging: true
+                    }).addTo(map);
+                });
+            });
+
+            // Atur ulang toggle circle button pada event listener setiap dibuka
+            document.getElementById('toggleCircleButton').addEventListener('click', toggleCircle);
+
+            // Clear existing table data
+            $('#storeTableBody').empty();
+
+            // Populate table with store data
+            storeLocation.data.forEach((store) => {
+                // Your existing marker code...
+
+                // Append store data to table
+                $('#storeTableBody').append(`
+                <tr>
+                    <td>${store.nama_agen}</td>
+                    <td>${store.alamat}, ${store.kecamatan}, ${store.kota}</td>
+                    <td>${store.distance}</td>
+                </tr>
+                `);
+            });
+        }
+
+        function toggleCircle() {
+            if (map.hasLayer(circle)) {
+                map.removeLayer(circle);
+            } else {
+                map.addLayer(circle);
             }
         }
 
-        function removeSlide(index) {
-            slides[index].remove();
-            updateSlideList();
-        }
-
-        // Initial call to populate the slide list
-        updateSlideList();
+        // Buka map secara default
+        window.onload = useGeolocation;
     </script>
 @endpush

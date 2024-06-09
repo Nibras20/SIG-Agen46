@@ -54,6 +54,7 @@
                 </div>
             </div>
 
+            {{-- Dropdown --}}
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
                 <div class="dropdown">
                     <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-1"
@@ -68,15 +69,9 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end pb-0">
                         <span class="small ps-3 fw-bold text-dark">Show</span>
-                        <a class="dropdown-item d-flex align-items-center fw-bold" href="#">10 <svg
-                                class="icon icon-xxs ms-auto" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd"></path>
-                            </svg></a>
-                        <a class="dropdown-item fw-bold" href="#">20</a>
-                        <a class="dropdown-item fw-bold rounded-bottom" href="#">30</a>
+                        <a class="dropdown-item fw-bold" href="{{ route('list-agen46admin', ['perPage' => 5]) }}">5</a>
+                        <a class="dropdown-item fw-bold" href="{{ route('list-agen46admin', ['perPage' => 10]) }}">10</a>
+                        <a class="dropdown-item fw-bold rounded-bottom" href="{{ route('list-agen46admin', ['perPage' => 20]) }}">20</a>
                     </div>
                 </div>
             </div>
@@ -99,6 +94,7 @@
             <thead>
                 <tr>
                     <th class="border-gray-200">No.</th>
+                    <th class="border-gray-200">Kode Agen</th>
                     <th class="border-gray-200">Nama Agen</th>
                     <th class="border-gray-200">Alamat</th>
                     <th class="border-gray-200">Kecamatan</th>
@@ -106,6 +102,7 @@
                     <th class="border-gray-200">Keterangan</th>
                     <th class="border-gray-200">Longitude</th>
                     <th class="border-gray-200">Latitude</th>
+                    
                     <th class="border-gray-200">Aksi</th>
                 </tr>
             </thead>
@@ -113,34 +110,40 @@
                 <!-- Item -->
                 @foreach ($data_agen as $w)
                     <tr>
-                        <td>{{ $loop->iteration + $data_agen->firstItem() - 1 }}</td>
-                        <td><span class="fw-normal">{{ $w->nama_agen }}</span></td>
-                        <td><span class="fw-normal">{{ $w->alamat }}</span></td>
-                        <td><span class="fw-normal">{{ $w->kecamatan }}</span></td>
-                        <td><span class="fw-normal">{{ $w->kota }}</span></td>
-                        <td><span class="fw-normal">{{ $w->keterangan }}</span></td>
-                        <td><span class="fw-normal">{{ $w->longitude }}</span></td>
-                        <td><span class="fw-normal">{{ $w->latitude }}</span></td>
+                        <td class="align-middle">{{ $loop->iteration + $data_agen->firstItem() - 1 }}</td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->kode_agen }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->nama_agen }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->alamat }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->kecamatan }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->kota }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->keterangan }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->longitude }}</span></td>
+                        <td class="align-middle"><span class="fw-normal">{{ $w->latitude }}</span></td>
+                        
                         <td>
                             <div class="btn-group">
-                                <a href="#" class="edit btn btn-info btn-sm mr" kode_agen="{{ $w->kode_agen }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
-                                        </path>
-                                        <path d="M16 5l3 3"></path>
-                                    </svg>
-                                </a>
-                                <form action="agen/{{ $w->kode_agen }}/delete" method="POST"
-                                    style="margin-left:5px">
+                                <form action="#" method="POST" style="margin-right: 2px;">
                                     @csrf
-                                    <a class="btn btn-danger btn-sm delete-confirm">
+                                    <button type="button" class="btn btn-info btn-sm edit"
+                                        kode_agen="{{ $w->kode_agen }}" style="padding: 1px 3px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit"
+                                            width="12" height="12" viewBox="0 0 24 24" stroke-width="2"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                            <path
+                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z">
+                                            </path>
+                                            <path d="M16 5l3 3"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                <form action="agen/{{ $w->kode_agen }}/delete" method="POST">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm delete-confirm" style="padding: 1px 3px;">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
-                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                            width="12" height="12" viewBox="0 0 24 24" stroke-width="2"
                                             stroke="currentColor" fill="none" stroke-linecap="round"
                                             stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -150,10 +153,12 @@
                                             <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
                                             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
                                         </svg>
-                                    </a>
+                                    </button>
                                 </form>
                             </div>
                         </td>
+
+
                     </tr>
                 @endforeach
             </tbody>
@@ -162,39 +167,6 @@
         {{ $data_agen->links('vendor.pagination.bootstrap-5') }}
 
 
-    </div>
-    <div class="theme-settings card bg-gray-800 pt-2 collapse" id="theme-settings">
-        <div class="card-body bg-gray-800 text-white pt-4">
-            <button type="button" class="btn-close theme-settings-close" aria-label="Close" data-bs-toggle="collapse"
-                href="#theme-settings" role="button" aria-expanded="false" aria-controls="theme-settings"></button>
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <p class="m-0 mb-1 me-4 fs-7">Open source <span role="img" aria-label="gratitude">💛</span></p>
-                <a class="github-button" href="https://github.com/themesberg/volt-bootstrap-5-dashboard"
-                    data-color-scheme="no-preference: dark; light: light; dark: light;" data-icon="octicon-star"
-                    data-size="large" data-show-count="true"
-                    aria-label="Star themesberg/volt-bootstrap-5-dashboard on GitHub">Star</a>
-            </div>
-            <a href="https://themesberg.com/product/admin-dashboard/volt-bootstrap-5-dashboard" target="_blank"
-                class="btn btn-secondary d-inline-flex align-items-center justify-content-center mb-3 w-100">
-                Download
-                <svg class="icon icon-xs ms-2" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z"
-                        clip-rule="evenodd"></path>
-                </svg>
-            </a>
-            <p class="fs-7 text-gray-300 text-center">Available in the following technologies:</p>
-            <div class="d-flex justify-content-center">
-                <a class="me-3" href="https://themesberg.com/product/admin-dashboard/volt-bootstrap-5-dashboard"
-                    target="_blank">
-                    <img src="../assets/img/technologies/bootstrap-5-logo.svg" class="image image-xs">
-                </a>
-                <a href="https://demo.themesberg.com/volt-react-dashboard/#/" target="_blank">
-                    <img src="../assets/img/technologies/react-logo.svg" class="image image-xs">
-                </a>
-            </div>
-        </div>
     </div>
 
     {{-- Modal Tambah Data --}}
@@ -432,6 +404,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Function to set items per page
+        function setPerPage(perPage) {
+            var url = window.location.href.split('?')[0];
+            window.location.href = url + '?perPage=' + perPage;
+        }
+    </script>
 @endsection
 
 @push('javascript')
@@ -441,6 +421,7 @@
                 $("#modal-inputagen").modal("show");
             });
 
+            // Edit
             $(".edit").click(function() {
                 var kode_agen = $(this).attr('kode_agen');
                 $.ajax({
@@ -458,6 +439,7 @@
                 $("#modal-editagen").modal("show");
             });
 
+            //delete
             $(".delete-confirm").click(function(e) {
                 var form = $(this).closest('form');
                 e.preventDefault();
@@ -481,6 +463,7 @@
                 })
             });
 
+            // input
             $("#frmAgen").submit(function() {
                 var kode_agen = $("#kode_agen").val();
                 var nama_agen = $("#nama_agen").val();

@@ -9,6 +9,10 @@
         #map {
             height: 400px;
         }
+
+        .location-inputs {
+            margin-bottom: 15px;
+        }
     </style>
 @endsection
 
@@ -40,6 +44,18 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="location-inputs">
+                            <button id="useGeolocation" class="btn btn-primary">Gunakan Lokasi Saya</button>
+                            <button id="useManualLocation" class="btn btn-secondary">Gunakan Lokasi Manual</button>
+                            <button id="toggleCircleButton" class="btn btn-secondary">Radius</button>
+                            <div id="manualLocationInputs" style="display: none;">
+                                <label for="latitude">Latitude:</label>
+                                <input type="text" id="latitude" class="form-control" placeholder="Masukkan Latitude">
+                                <label for="longitude">Longitude:</label>
+                                <input type="text" id="longitude" class="form-control" placeholder="Masukkan Longitude">
+                                <button id="submitManualLocation" class="btn btn-success mt-2">Submit</button>
+                            </div>
+                        </div>
                         <input type="hidden" id="lokasi">
                         <div id="map"></div>
                     </div>
@@ -59,10 +75,38 @@
     <script>
         var lokasi = document.getElementById('lokasi');
         var routingControl = null;
+        var circle = null;
+        var map;
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        // Function to get and use geolocation
+        function useGeolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            }
         }
+
+        document.getElementById('useGeolocation').addEventListener('click', function() {
+            document.getElementById('manualLocationInputs').style.display = 'none';
+            useGeolocation();
+        });
+
+        document.getElementById('useManualLocation').addEventListener('click', function() {
+            document.getElementById('manualLocationInputs').style.display = 'block';
+        });
+
+        document.getElementById('submitManualLocation').addEventListener('click', function() {
+            let lat = parseFloat(document.getElementById('latitude').value);
+            let lng = parseFloat(document.getElementById('longitude').value);
+            if (!isNaN(lat) && !isNaN(lng)) {
+                let userLocation = {
+                    latitude: lat,
+                    longitude: lng
+                };
+                initializeMap(userLocation);
+            } else {
+                alert('Masukkan koordinat yang valid');
+            }
+        });
 
         function getStoreLocationDistance(userLocation) {
             return $.ajax({
@@ -77,7 +121,19 @@
 
         function successCallback(position) {
             let userLocation = position.coords;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+            initializeMap(userLocation);
+        }
+
+        function errorCallback(error) {
+            console.error("Geolocation error: ", error);
+        }
+
+        function initializeMap(userLocation) {
+            if (map) {
+                map.remove();
+            }
+
+            map = L.map('map').setView([userLocation.latitude, userLocation.longitude], 18);
 
             let storeLocation = getStoreLocationDistance(userLocation);
 
@@ -95,20 +151,24 @@
                 })
             }).addTo(map).bindPopup("Lokasi Saya").openPopup();
 
-            // var circle = L.circle([userLocation.latitude, userLocation.longitude], {
-            //     color: 'green',
-            //     fillColor: '#BCFEA3',
-            //     fillOpacity: 0.5,
-            //     radius: 1000
-            // }).addTo(map);
+            if (circle) {
+                map.removeLayer(circle);
+            }
 
-            // Kode Asal
+            circle = L.circle([userLocation.latitude, userLocation.longitude], {
+                color: 'green',
+                fillColor: '#BCFEA3',
+                fillOpacity: 0.5,
+                radius: 1000
+            }).addTo(map);
+
+            // Euclidean
             // $.each(storeLocation.data, (index, store) => {
             //     L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(
             //         `Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
             // })
 
-            // Modifikasi
+            // Modifikasi Euclidean
             storeLocation.data.forEach((store) => {
                 let markerIconUrl = store.distance > 1000 ?
                     'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' :
@@ -121,15 +181,31 @@
                         iconAnchor: [12, 41],
                         popupAnchor: [1, -34]
                     })
-                }).addTo(map).bindPopup(
+                }).addTo(map).bindTooltip(
+                    `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                    Jarak anda ${store.distance} meter dari lokasi agen`,
+                    { permanent: true, direction: "top", offset: [0, -36] } // Atur pop up diatas marker
+                ).bindPopup(
                     `<b>Nama Agen46 : ${store.nama_agen}</b><br>
                     Alamat Agen46 : ${store.alamat} <br>
                     Kecamatan Agen46 : ${store.kecamatan} <br>
                     Kota/Kab Agen46 : ${store.kota} <br>
                     Keterangan : ${store.keterangan} <br>
-                    <b>Jarak anda ${store.distance} meter dari lokasi agen</b>`);
+                    <b>Jarak anda ${store.distance} meter dari lokasi agen</b>`
+                );
 
                 storeMarker.on('click', function() {
+                    storeMarker.unbindTooltip();
+                    storeMarker.openPopup();
+
+                    storeMarker.on('popupclose', function() {
+                        storeMarker.bindTooltip(
+                            `<b>Nama Agen46 : ${store.nama_agen}</b><br>
+                            Jarak anda ${store.distance} meter dari lokasi agen`,
+                            { permanent: true, direction: "top", offset: [0, -36] } // Atur pop up diatas marker
+                        );
+                    });
+
                     if (routingControl) {
                         map.removeControl(routingControl);
                     }
@@ -142,11 +218,21 @@
                     }).addTo(map);
                 });
             });
+
+            // Atur ulang toggle circle button pada event listener setiap dibuka
+            document.getElementById('toggleCircleButton').addEventListener('click', toggleCircle);
         }
 
-        function errorCallback(error) {
-            console.error("Geolocation error: ", error);
+        function toggleCircle() {
+            if (map.hasLayer(circle)) {
+                map.removeLayer(circle);
+            } else {
+                map.addLayer(circle);
+            }
         }
+
+        // Buka map secara default
+        window.onload = useGeolocation;
     </script>
 @endpush
 
