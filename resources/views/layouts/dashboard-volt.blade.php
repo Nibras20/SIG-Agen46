@@ -116,7 +116,7 @@
             <!--SIDEBAR NAV-->
             <ul class="nav flex-column pt-md-0">
                 <li class="nav-item">
-                    <a href="../../index.html" class="nav-link d-flex align-items-center">
+                    <a href="home" class="nav-link d-flex align-items-center">
                         <span class="sidebar-icon">
                             <img src="{{ asset('assets/img/logoagen46alt.png') }}" width="auto" height="auto"
                                 alt="Logo Agen46">

@@ -135,12 +135,17 @@
         }
 
         function successCallback(position) {
-            let userLocation = position.coords;
+            let userLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
             initializeMap(userLocation);
         }
 
         function errorCallback(error) {
-            console.error("Geolocation error: ", error);
+            console.error("Geolocation error: ", error.message);
+            // Handle geolocation error appropriately
+            // Example: Provide a fallback location or display an error message to the user
         }
 
         function initializeMap(userLocation) {

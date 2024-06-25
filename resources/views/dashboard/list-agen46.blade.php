@@ -1,11 +1,21 @@
 @extends('layouts.dashboard-volt')
+
+@section('css')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <style>
+        .pagination-controls {
+            margin-bottom: 0px;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
-                        <a href="home">
+                        <a href="dashboardadmin">
                             <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -14,93 +24,201 @@
                             </svg>
                         </a>
                     </li>
-
                     <li class="breadcrumb-item active" aria-current="page">List BNI Agen46</li>
                 </ol>
             </nav>
             <h2 class="h4">List Agen46</h2>
-            {{-- <p class="mb-0">Temukan Data Agen46.</p> --}}
-        </div>
-
-    </div>
-
-    <div class="table-settings mb-4">
-        <div class="row align-items-center justify-content-between">
-
-            {{-- Kolom Pencarian --}}
-            <div class="col col-md-6 col-lg-3 col-xl-4">
-                <div class="input-group me-2 me-lg-3 fmxw-400">
-                    <span class="input-group-text">
-                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </span>
-                    <input type="text" class="form-control" placeholder="Cari">
-                </div>
-            </div>
-
-            {{-- Dropdown --}}
-            <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
-                <div class="dropdown">
-                    <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-1"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end pb-0">
-                        <span class="small ps-3 fw-bold text-dark">Show</span>
-                        <a class="dropdown-item fw-bold" href="{{ route('list-agen46', ['perPage' => 5]) }}">5</a>
-                        <a class="dropdown-item fw-bold" href="{{ route('list-agen46', ['perPage' => 10]) }}">10</a>
-                        <a class="dropdown-item fw-bold rounded-bottom" href="{{ route('list-agen46', ['perPage' => 20]) }}">20</a>
-                    </div>
-                </div>
-            </div>
-
+            <p class="mb-0">Temukan Data Agen46.</p>
+            
         </div>
     </div>
+
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
-        <table class="table table-hover">
+        
+        <!-- Metode Lokasi dan Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="h4 mt-4">Pilih Metode Lokasi</h2>
+                <div class="mb-3">
+                    <button class="btn btn-secondary" id="useGeolocation">Gunakan Geolocation</button>
+                    <button class="btn btn-secondary" id="useManualLocation">Masukkan Lokasi Manual</button>
+                </div>
+                <div id="manualLocationInputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="text" class="form-control" id="latitude" placeholder="Enter latitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="text" class="form-control" id="longitude" placeholder="Enter longitude">
+                    </div>
+                    <button class="btn btn-primary" id="submitManualLocation">Submit</button>
+                </div>
+            </div>
+            <div class="pagination-controls">
+                <div class="dropdown">
+                    <label for="pageLengthSelect" class="me-2 mt-1">Show:</label>
+                    <select class="form-select form-select-sm me-2" id="pageLengthSelect">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <table id="dataAgenTable" class="display">
             <thead>
                 <tr>
-                    <th class="border-gray-200">No.</th>
-                    <th class="border-gray-200">Nama Agen</th>
-                    <th class="border-gray-200">Alamat</th>
-                    <th class="border-gray-200">Kecamatan</th>
-                    <th class="border-gray-200">Kabupaten/Kota</th>
-                    <th class="border-gray-200">Keterangan</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Kecamatan</th>
+                    <th>Kota</th>
+                    <th>Keterangan</th>
+                    <th>Jarak</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Item -->
-                @foreach ($data_agen as $w)
-                    <tr>
-                        <td class="align-middle">{{ $loop->iteration + $data_agen->firstItem() - 1 }}</td>
-                        <td class="align-middle"><span class="fw-normal">{{ $w->nama_agen }}</span></td>
-                        <td class="align-middle"><span class="fw-normal">{{ $w->alamat }}</span></td>
-                        <td class="align-middle"><span class="fw-normal">{{ $w->kecamatan }}</span></td>
-                        <td class="align-middle"><span class="fw-normal">{{ $w->kota }}</span></td>
-                        <td class="align-middle"><span class="fw-normal">{{ $w->keterangan }}</span></td>
-                    </tr>
-                @endforeach
+            <tbody id="storeTableBody">
+                <!-- Table rows will be dynamically populated -->
             </tbody>
         </table>
-        {{ $data_agen->links('vendor.pagination.bootstrap-5') }}
     </div>
+@endsection
 
+@push('javascript')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
-        // Function to set items per page
-        function setPerPage(perPage) {
-            var url = window.location.href.split('?')[0];
-            window.location.href = url + '?perPage=' + perPage;
-        }
+        $(document).ready(function() {
+            var table;
+
+            // Initialize DataTable with options
+            function initializeDataTable() {
+                table = $('#dataAgenTable').DataTable({
+                    searching: false, // Disable search feature
+                    lengthChange: false, // Disable show entries feature
+                    ordering: false, // Disable sorting for all columns
+                    info: true, // Disable showing "Showing X to Y of Z entries"
+                    paging: true, // Enable pagination
+                    pageLength: 5, // Set default items per page to 5
+                    columnDefs: [{
+                            width: '30%',
+                            targets: 1
+                        }, // Set width for the 'Alamat' column
+                        {
+                            width: '20%',
+                            targets: 4
+                        }, // Set width for the 'Alamat' column
+                        {
+                            width: 'auto',
+                            targets: [0, 2, 3, 5]
+                        } // Let other columns adjust automatically
+                    ],
+                    autoWidth: false // Disable auto width calculation
+                });
+            }
+
+            initializeDataTable(); // Initialize DataTable on page load
+
+            useGeolocation(); // Initialize with geolocation on page load
+
+            // Function to get and use geolocation
+            function useGeolocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                }
+            }
+
+            document.getElementById('useGeolocation').addEventListener('click', function() {
+                document.getElementById('manualLocationInputs').style.display = 'none';
+                useGeolocation();
+            });
+
+            document.getElementById('useManualLocation').addEventListener('click', function() {
+                document.getElementById('manualLocationInputs').style.display = 'block';
+            });
+
+            document.getElementById('submitManualLocation').addEventListener('click', function() {
+                let lat = parseFloat(document.getElementById('latitude').value);
+                let lng = parseFloat(document.getElementById('longitude').value);
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    let userLocation = {
+                        latitude: lat,
+                        longitude: lng
+                    };
+                    initializeMap(userLocation);
+                } else {
+                    alert('Masukkan koordinat yang valid');
+                }
+            });
+
+            function getStoreLocationDistance(userLocation) {
+                // Replace this with your actual route name for fetching data
+                return $.ajax({
+                    url: route('api.agen.json'), // Adjust this route according to your Laravel routes
+                    method: 'GET',
+                    data: {
+                        userLocation
+                    },
+                    async: false
+                }).responseJSON;
+            }
+
+            function successCallback(position) {
+                let userLocation = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+                initializeMap(userLocation);
+            }
+
+            function errorCallback(error) {
+                console.error("Geolocation error: ", error.message);
+                // Handle geolocation error appropriately
+                // Example: Provide a fallback location or display an error message to the user
+            }
+
+            function initializeMap(userLocation) {
+                // Clear existing table data
+                $('#storeTableBody').empty();
+
+                let storeLocation = getStoreLocationDistance(userLocation);
+
+                storeLocation.data.forEach((store) => {
+                    // Append store data to table
+                    $('#storeTableBody').append(`
+                    <tr>
+                        <td>${store.nama_agen}</td>
+                        <td>${store.alamat}</td>
+                        <td>${store.kecamatan}</td>
+                        <td>${store.kota}</td>
+                        <td>${store.keterangan}</td>
+                        <td>${store.distance}</td>
+                    </tr>
+                    `);
+                });
+
+                // Refresh DataTables after updating table body
+                table.clear().rows.add($('#storeTableBody tr')).draw();
+            }
+
+            // Toggle pagination button click event
+            $('.toggle-pagination').on('click', function() {
+                table.page.len() === -1 ? table.page.len(5).draw() : table.page.len(-1).draw();
+                $(this).toggleClass('btn-primary btn-secondary');
+                $(this).text(table.page.len() === -1 ? 'Disable Pagination' : 'Enable Pagination');
+            });
+
+            // Page length select change event
+            $('#pageLengthSelect').on('change', function() {
+                var val = $(this).val();
+                table.page.len(val).draw();
+            });
+        });
+
     </script>
-@endsection
+@endpush

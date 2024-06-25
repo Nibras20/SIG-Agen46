@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="location-inputs">
                             <button id="useGeolocation" class="btn btn-primary">Gunakan Lokasi Saya</button>
-                            <button id="useManualLocation" class="btn btn-secondary">Gunakan Lokasi Manual</button>
+                            <button id="useManualLocation" class="btn btn-primary">Gunakan Lokasi Manual</button>
                             <button id="toggleCircleButton" class="btn btn-secondary">Radius</button>
                             <div id="manualLocationInputs" style="display: none;">
                                 <label for="latitude">Latitude:</label>
@@ -120,12 +120,17 @@
         }
 
         function successCallback(position) {
-            let userLocation = position.coords;
+            let userLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
             initializeMap(userLocation);
         }
 
         function errorCallback(error) {
-            console.error("Geolocation error: ", error);
+            console.error("Geolocation error: ", error.message);
+            // Handle geolocation error appropriately
+            // Example: Provide a fallback location or display an error message to the user
         }
 
         function initializeMap(userLocation) {
