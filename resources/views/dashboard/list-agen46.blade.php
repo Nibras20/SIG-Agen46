@@ -4,7 +4,20 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
         .pagination-controls {
-            margin-bottom: 0px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pagination-controls label {
+            margin-right: 10px;
+            /* Mengatur jarak antara label "Show" dan dropdown */
+        }
+
+        .pagination-controls .form-select {
+            flex-grow: 1;
+            /* Menyesuaikan panjang dropdown pagination dengan ruang tersedia */
+            min-width: 4rem;
+            /* Lebar minimum untuk dropdown pagination */
         }
     </style>
 @endsection
@@ -29,19 +42,17 @@
             </nav>
             <h2 class="h4">List Agen46</h2>
             <p class="mb-0">Temukan Data Agen46.</p>
-            
         </div>
     </div>
 
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
-        
         <!-- Metode Lokasi dan Pagination Controls -->
         <div class="d-flex justify-content-between align-items-center">
             <div>
-                <h2 class="h4 mt-4">Pilih Metode Lokasi</h2>
+                <h2 class="h4">Pilih Metode Lokasi</h2>
                 <div class="mb-3">
-                    <button class="btn btn-secondary" id="useGeolocation">Gunakan Geolocation</button>
-                    <button class="btn btn-secondary" id="useManualLocation">Masukkan Lokasi Manual</button>
+                    <button class="btn btn-primary" id="useGeolocation">Gunakan Lokasi Saya</button>
+                    <button class="btn btn-primary" id="useManualLocation">Gunakan Lokasi Manual</button>
                 </div>
                 <div id="manualLocationInputs" style="display: none;">
                     <div class="form-group">
@@ -55,10 +66,11 @@
                     <button class="btn btn-primary" id="submitManualLocation">Submit</button>
                 </div>
             </div>
-            <div class="pagination-controls">
-                <div class="dropdown">
+            <div class="d-flex align-items-center mt-3">
+                <input type="text" id="dataTableSearch" class="form-control form-control-sm me-3" placeholder="Search">
+                <div class="pagination-controls">
                     <label for="pageLengthSelect" class="me-2 mt-1">Show:</label>
-                    <select class="form-select form-select-sm me-2" id="pageLengthSelect">
+                    <select class="form-select form-select-sm" id="pageLengthSelect">
                         <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
@@ -77,7 +89,7 @@
                     <th>Kecamatan</th>
                     <th>Kota</th>
                     <th>Keterangan</th>
-                    <th>Jarak</th>
+                    <th>Jarak(m)</th>
                 </tr>
             </thead>
             <tbody id="storeTableBody">
@@ -99,10 +111,10 @@
             // Initialize DataTable with options
             function initializeDataTable() {
                 table = $('#dataAgenTable').DataTable({
-                    searching: false, // Disable search feature
+                    dom: 'lrtip', // Remove default search input
                     lengthChange: false, // Disable show entries feature
-                    ordering: false, // Disable sorting for all columns
-                    info: true, // Disable showing "Showing X to Y of Z entries"
+                    ordering: true, // Enable sorting for all columns
+                    info: true, // Show "Showing X to Y of Z entries"
                     paging: true, // Enable pagination
                     pageLength: 5, // Set default items per page to 5
                     columnDefs: [{
@@ -119,6 +131,16 @@
                         } // Let other columns adjust automatically
                     ],
                     autoWidth: false // Disable auto width calculation
+                });
+
+                // Add custom search input functionality
+                $('#dataTableSearch').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+
+                // Add custom page length change functionality
+                $('#pageLengthSelect').on('change', function() {
+                    table.page.len(this.value).draw();
                 });
             }
 
@@ -219,6 +241,5 @@
                 table.page.len(val).draw();
             });
         });
-
     </script>
 @endpush

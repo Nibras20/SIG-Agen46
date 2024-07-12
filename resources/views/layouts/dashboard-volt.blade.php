@@ -125,6 +125,7 @@
                 </li>
 
                 <!--SIDEBAR MENU-->
+                <br>
                 <li class="nav-item {{ Request::is('home') ? 'active' : '' }}">
                     <a href="{{ route('home') }}" class="nav-link">
                         <span class="sidebar-icon">

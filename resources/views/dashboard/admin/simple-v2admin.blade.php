@@ -13,6 +13,10 @@
         .location-inputs {
             margin-bottom: 15px;
         }
+
+        #radiusControl {
+            display: none;
+        }
     </style>
 @endsection
 
@@ -48,12 +52,19 @@
                             <button id="useGeolocation" class="btn btn-primary">Gunakan Lokasi Saya</button>
                             <button id="useManualLocation" class="btn btn-primary">Gunakan Lokasi Manual</button>
                             <button id="toggleCircleButton" class="btn btn-secondary">Radius</button>
+                            <button id="toggleRadiusControl" class="btn btn-secondary">Atur Radius</button>
+                            
                             <div id="manualLocationInputs" style="display: none;">
                                 <label for="latitude">Latitude:</label>
                                 <input type="text" id="latitude" class="form-control" placeholder="Masukkan Latitude">
                                 <label for="longitude">Longitude:</label>
                                 <input type="text" id="longitude" class="form-control" placeholder="Masukkan Longitude">
                                 <button id="submitManualLocation" class="btn btn-success mt-2">Submit</button>
+                            </div>
+                            
+                            <div id="radiusControl">
+                                <input type="number" id="radiusInput" class="form-control" placeholder="Masukkan radius dalam meter">
+                                <button id="setRadiusButton" class="btn btn-success mt-2">Atur Radius</button>
                             </div>
                         </div>
                         <input type="hidden" id="lokasi">
@@ -73,12 +84,12 @@
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
     <script>
-        var lokasi = document.getElementById('lokasi');
         var routingControl = null;
         var circle = null;
         var map;
+        var radius = 1000; // Default radius
+        var userLocation = null; // Store the user location
 
-        // Function to get and use geolocation
         function useGeolocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
@@ -87,18 +98,25 @@
 
         document.getElementById('useGeolocation').addEventListener('click', function() {
             document.getElementById('manualLocationInputs').style.display = 'none';
+            document.getElementById('radiusControl').style.display = 'none';
             useGeolocation();
         });
 
         document.getElementById('useManualLocation').addEventListener('click', function() {
             document.getElementById('manualLocationInputs').style.display = 'block';
+            document.getElementById('radiusControl').style.display = 'none';
+        });
+
+        document.getElementById('toggleRadiusControl').addEventListener('click', function() {
+            document.getElementById('manualLocationInputs').style.display = 'none';
+            document.getElementById('radiusControl').style.display = 'block';
         });
 
         document.getElementById('submitManualLocation').addEventListener('click', function() {
             let lat = parseFloat(document.getElementById('latitude').value);
             let lng = parseFloat(document.getElementById('longitude').value);
             if (!isNaN(lat) && !isNaN(lng)) {
-                let userLocation = {
+                userLocation = {
                     latitude: lat,
                     longitude: lng
                 };
@@ -112,15 +130,13 @@
             return $.ajax({
                 url: route('api.agen.json'),
                 method: 'GET',
-                data: {
-                    userLocation
-                },
+                data: { userLocation },
                 async: false
             }).responseJSON;
         }
 
         function successCallback(position) {
-            let userLocation = {
+            userLocation = {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             };
@@ -129,8 +145,6 @@
 
         function errorCallback(error) {
             console.error("Geolocation error: ", error.message);
-            // Handle geolocation error appropriately
-            // Example: Provide a fallback location or display an error message to the user
         }
 
         function initializeMap(userLocation) {
@@ -164,27 +178,26 @@
                 color: 'green',
                 fillColor: '#BCFEA3',
                 fillOpacity: 0.5,
-                radius: 1000
+                radius: radius
             }).addTo(map);
 
-            // Euclidean
+            updateStoreMarkers(storeLocation.data, userLocation);
+
+            document.getElementById('toggleCircleButton').addEventListener('click', toggleCircle);
+        }
+
+        // Euclidean
             // $.each(storeLocation.data, (index, store) => {
             //     L.marker([store.latitude, store.longitude]).addTo(map).bindPopup(
             //         `Agen46 ${store.nama_agen}, jarak anda ${store.distance} meter dari lokasi agen`);
             // })
 
-            // Modifikasi Euclidean
-            storeLocation.data.forEach((store) => {
-                let markerIconUrl = store.distance > 1000 ?
+        // Modifikasi Euclidean
+        function updateStoreMarkers(storeData, userLocation) {
+            storeData.forEach((store) => {
+                let markerIconUrl = store.distance > radius ?
                     'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' :
                     'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
-
-                circle1 = L.circle([store.latitude, store.longitude], {
-                    color: 'yellow',
-                    fillColor: '#BCFEA3',
-                    fillOpacity: 0.5,
-                    radius: 1000
-                }).addTo(map);
 
                 let storeMarker = L.marker([store.latitude, store.longitude], {
                     icon: L.icon({
@@ -199,7 +212,7 @@
                         permanent: true,
                         direction: "top",
                         offset: [0, -36]
-                    } // Atur pop up diatas marker
+                    }
                 ).bindPopup(
                     `<b>Nama Agen46 : ${store.nama_agen}</b><br>
                     Alamat Agen46 : ${store.alamat} <br>
@@ -220,7 +233,7 @@
                                 permanent: true,
                                 direction: "top",
                                 offset: [0, -36]
-                            } // Atur pop up diatas marker
+                            }
                         );
                     });
 
@@ -236,9 +249,6 @@
                     }).addTo(map);
                 });
             });
-
-            // Atur ulang toggle circle button pada event listener setiap dibuka
-            document.getElementById('toggleCircleButton').addEventListener('click', toggleCircle);
         }
 
         function toggleCircle() {
@@ -249,7 +259,27 @@
             }
         }
 
-        // Buka map secara default
+        document.getElementById('setRadiusButton').addEventListener('click', function() {
+            let newRadius = parseFloat(document.getElementById('radiusInput').value);
+            if (!isNaN(newRadius)) {
+                radius = newRadius;
+                setCircleRadius(radius);
+                if (userLocation) {
+                    let storeLocation = getStoreLocationDistance(userLocation);
+                    updateStoreMarkers(storeLocation.data, userLocation);
+                }
+            } else {
+                alert('Masukkan radius yang valid');
+            }
+        });
+
+        function setCircleRadius(newRadius) {
+            if (circle) {
+                circle.setRadius(newRadius);
+            }
+        }
+
         window.onload = useGeolocation;
     </script>
 @endpush
+

@@ -61,9 +61,26 @@ class HomeController extends Controller
     public function list_agen46admin(Request $request)
     {
         $perPage = $request->input('perPage', 5);
-        $data_agen = DB::table('data_agen')->orderBy('kode_agen')->paginate($perPage);
+        $query = DB::table('data_agen')->orderBy('kode_agen');
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('kode_agen', 'like', "%{$search}%")
+                    ->orWhere('nama_agen', 'like', "%{$search}%")
+                    ->orWhere('alamat', 'like', "%{$search}%")
+                    ->orWhere('kecamatan', 'like', "%{$search}%")
+                    ->orWhere('kota', 'like', "%{$search}%")
+                    ->orWhere('keterangan', 'like', "%{$search}%")
+                    ->orWhere('latitude', 'like', "%{$search}%")
+                    ->orWhere('longitude', 'like', "%{$search}%");
+            });
+        }
+
+        $data_agen = $query->paginate($perPage);
         return view('dashboard.admin.list-agen46admin', compact('data_agen'));
     }
+
 
     public function store(Request $request)
     {
